@@ -70,20 +70,24 @@ def test__repr_svg_(mocker, source):
     pipe.return_value.decode.assert_called_once_with(source.encoding)
 
 
-def test_pipe_format(pipe, source, format_='svg'):
+def test_pipe_format(mocker, pipe, source, format_='svg'):
     assert source.format != format_
 
     assert source.pipe(format=format_) is pipe.return_value
 
-    data = source.source.encode(source.encoding)
-    pipe.assert_called_once_with(source.engine, format_, data, None, None)
+    pipe.assert_called_once_with(source.engine, format_, mocker.ANY, None, None)
+    (_, _, data, _, _), _ = pipe.call_args
+    lines = [uline.encode(source.encoding) for uline in source.source.splitlines()]
+    assert list(data) == lines + [b'\n']
 
 
-def test_pipe(pipe, source):
+def test_pipe(mocker, pipe, source):
     assert source.pipe() is pipe.return_value
 
-    data = source.source.encode(source.encoding)
-    pipe.assert_called_once_with(source.engine, source.format, data, None, None)
+    pipe.assert_called_once_with(source.engine, source.format, mocker.ANY, None, None)
+    (_, _, data, _, _), _ = pipe.call_args
+    lines = [uline.encode(source.encoding) for uline in source.source.splitlines()]
+    assert list(data) == lines + [b'\n']
 
 
 def test_filepath(test_platform, source):

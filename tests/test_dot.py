@@ -62,8 +62,8 @@ def test_iter_subgraph_strict(cls):
 
 
 @pytest.mark.parametrize('cls, expected', [
-    (Graph, 'strict graph {\n}'),
-    (Digraph, 'strict digraph {\n}'),
+    (Graph, 'strict graph {\n}\n'),
+    (Digraph, 'strict digraph {\n}\n'),
 ], ids=lambda p: getattr(p, '__name__', '...'))
 def test_iter_strict(cls, expected):
     assert cls(strict=True).source == expected
@@ -75,8 +75,8 @@ def test_attr_invalid_kw(cls):
 
 
 @pytest.mark.parametrize('cls, expected', [
-    (Graph, 'graph {\n\tspam=eggs\n}'),
-    (Digraph, 'digraph {\n\tspam=eggs\n}'),
+    (Graph, 'graph {\n\tspam=eggs\n}\n'),
+    (Digraph, 'digraph {\n\tspam=eggs\n}\n'),
 ], ids=lambda p: getattr(p, '__name__', '...'))
 def test_attr_kw_none(cls, expected):
     dot = cls()
@@ -85,8 +85,8 @@ def test_attr_kw_none(cls, expected):
 
 
 @pytest.mark.parametrize('cls, expected', [
-    (Graph, 'graph {\n\t// comment\n\tsubgraph name {\n\t}\n}'),
-    (Digraph, 'digraph {\n\t// comment\n\tsubgraph name {\n\t}\n}'),
+    (Graph, 'graph {\n\t// comment\n\tsubgraph name {\n\t}\n}\n'),
+    (Digraph, 'digraph {\n\t// comment\n\tsubgraph name {\n\t}\n}\n'),
 ], ids=lambda p: getattr(p, '__name__', '...'))
 def test_subgraph_graph_none(cls, expected):
     dot = cls()
@@ -107,8 +107,8 @@ def test_subgraph_mixed(classes):
 
 
 @pytest.mark.parametrize('cls, expected', [
-    (Graph, 'graph {\n\t{\n\t}\n}'),
-    (Digraph, 'digraph {\n\t{\n\t}\n}'),
+    (Graph, 'graph {\n\t{\n\t}\n}\n'),
+    (Digraph, 'digraph {\n\t{\n\t}\n}\n'),
 ], ids=lambda p: getattr(p, '__name__', '...'))
 def test_subgraph_reflexive(cls, expected):  # guard against potential infinite loop
     dot = cls()
@@ -158,7 +158,8 @@ def test_subgraph():
 \tA -- D
 \tB -- E
 \tC -- F
-}'''
+}
+'''
 
 
 def test_label_html():
@@ -234,4 +235,5 @@ def test_label_html():
 </TABLE>>]
 \tstruct1:f1 -> struct2:f0
 \tstruct1:f2 -> struct3:here
-}'''
+}
+'''
